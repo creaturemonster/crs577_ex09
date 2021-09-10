@@ -1,0 +1,27 @@
+<project name="ex09_security_soap_client" basedir="." default="wsimport">
+    <property name="appname" value="${ant.project.name}" />
+
+    <import file="../build-common.xml" />
+    
+    <!-- TODO: Note that wsimport will read WSDL from a URL that uses https and
+               the SSL port number.
+               (no changes required) -->
+    <property name="wsimport.wsdl" 
+              value="https://localhost:8181/ex09_soap/currencyconverter?wsdl" />
+
+    <property name="wsimport.package" 
+              value="com.gdr.brokerage.generated" />
+    
+    <target name="wsimport" 
+            depends="common.wsimport"
+            description="Builds a SOAP Web service client">
+    </target>
+    
+    <target name="debug" 
+            depends="common.debug" 
+            description="Dumps values of Ant properties">
+        <echo>$${wsimport.package} = ${wsimport.package}</echo>
+        <echo>$${wsimport.wsdl} = ${wsimport.wsdl}</echo>
+    </target>
+    
+</project>

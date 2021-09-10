@@ -1,0 +1,34 @@
+<html>
+<body>
+<h2>Hints for Exercise 9.1 Securing a REST service</h2>
+
+<h3>InventoryClient.java</h3>
+
+<font color="grey"><pre>private Client createSecureClient(SslConfigurator sslConfig, String username, String password) {</pre></font>
+<font color="grey"><pre>    // TODO: use the SslConfigurator parameter to create an SSLContext</pre></font>
+<font color="blue"><pre>    SSLContext sslContext = sslConfig.createSSLContext();</pre></font>
+<font color="grey"><pre>    // TODO: Create a Client that uses the SslContext</pre></font>
+<font color="blue"><pre>    Client client = ClientBuilder.newBuilder()</pre></font>
+<font color="blue"><pre>                                 .sslContext(sslContext)</pre></font>
+<font color="blue"><pre>                                 .build();    </pre></font>
+<font color="grey"><pre>    // TODO: Create an HttpAuthenticationFeature for HTTP Basic Auth</pre></font>
+<font color="grey"><pre>    //       with the username and password parameters</pre></font>
+<font color="blue"><pre>    HttpAuthenticationFeature authentication = </pre></font>
+<font color="blue"><pre>            HttpAuthenticationFeature.basic(username, password);</pre></font>
+<font color="grey"><pre>    // TODO: Register the customer HttpAuthenticationFeature with the client</pre></font>
+<font color="blue"><pre>    client.register(authentication);</pre></font>
+<font color="grey"><pre>    // TODO: Return the Client</pre></font>
+<font color="blue"><pre>    return client;</pre></font>
+<font color="grey"><pre>}</pre></font>
+<font color="grey"><pre>public void close() {</pre></font>
+<font color="grey"><pre>    logger.debug("close() called");</pre></font>
+<font color="grey"><pre></pre></font>
+<font color="grey"><pre>    // TODO: close the Client for customers</pre></font>
+<font color="blue"><pre>    clientCustomer.close();</pre></font>
+<font color="grey"><pre></pre></font>
+<font color="grey"><pre>    // TODO: close the Client for staff</pre></font>
+<font color="blue"><pre>    clientStaff.close();</pre></font>
+<font color="grey"><pre>}</pre></font>
+
+</body>
+</html>

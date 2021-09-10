@@ -1,0 +1,143 @@
+<html>
+<body>
+<h2>Hints for Exercise 9.1 Securing a REST service</h2>
+
+<h3>web.xml</h3>
+
+<font color="grey"><pre>&lt;security-constraint&gt;</pre></font>
+<font color="grey"><pre>    &lt;web-resource-collection&gt;</pre></font>
+<font color="grey"><pre>        &lt;web-resource-name&gt;Read-only REST requests&lt;/web-resource-name&gt;</pre></font>
+<font color="grey"><pre>        &lt;!-- TODO: Set the pattern so that this constraint applies to URLs that </pre></font>
+<font color="grey"><pre>                   end with /rs/item/*  --&gt;</pre></font>
+<font color="blue"><pre>        &lt;url-pattern&gt;/rs/item/*&lt;/url-pattern&gt;</pre></font>
+<font color="grey"><pre>        &lt;!-- TODO: Set the method so that this constraint applies only to</pre></font>
+<font color="grey"><pre>                   GET requests --&gt;</pre></font>
+<font color="blue"><pre>        &lt;http-method&gt;GET&lt;/http-method&gt;</pre></font>
+<font color="grey"><pre>    &lt;/web-resource-collection&gt;</pre></font>
+<font color="grey"><pre>    &lt;auth-constraint&gt;</pre></font>
+<font color="grey"><pre>        &lt;!-- TODO: Set the constraint so the user must have the role customer or staff --&gt;</pre></font>
+<font color="blue"><pre>        &lt;role-name&gt;customer&lt;/role-name&gt;</pre></font>
+<font color="blue"><pre>        &lt;role-name&gt;staff&lt;/role-name&gt;</pre></font>
+<font color="grey"><pre>    &lt;/auth-constraint&gt;</pre></font>
+<font color="grey"><pre>    &lt;!-- TODO: Force clients to use https by configuring the appropriate transport guarantee--&gt;</pre></font>
+<font color="grey"><pre>    &lt;user-data-constraint&gt;</pre></font>
+<font color="blue"><pre>        &lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;</pre></font>
+<font color="grey"><pre>    &lt;/user-data-constraint&gt;</pre></font>
+<font color="grey"><pre>&lt;/security-constraint&gt;</pre></font>
+<font color="grey"><pre>&lt;security-constraint&gt;</pre></font>
+<font color="grey"><pre>    &lt;web-resource-collection&gt;</pre></font>
+<font color="grey"><pre>        &lt;web-resource-name&gt;Read-write REST requests&lt;/web-resource-name&gt;</pre></font>
+<font color="grey"><pre>        &lt;!-- TODO: Set the pattern so that this constraint applies to URLs that </pre></font>
+<font color="grey"><pre>                   end with /rs/item/* --&gt;</pre></font>
+<font color="blue"><pre>        &lt;url-pattern&gt;/rs/item/*&lt;/url-pattern&gt;</pre></font>
+<font color="grey"><pre>        &lt;!-- TODO: Set the method so that this constraint applies only to </pre></font>
+<font color="grey"><pre>                   POST, PUT, and DELETE requests --&gt;</pre></font>
+<font color="blue"><pre>        &lt;http-method&gt;POST&lt;/http-method&gt;</pre></font>
+<font color="blue"><pre>        &lt;http-method&gt;PUT&lt;/http-method&gt;</pre></font>
+<font color="blue"><pre>        &lt;http-method&gt;DELETE&lt;/http-method&gt;</pre></font>
+<font color="grey"><pre>    &lt;/web-resource-collection&gt;</pre></font>
+<font color="grey"><pre>    &lt;!-- TODO: Set the method so the user must have the role staff --&gt;</pre></font>
+<font color="grey"><pre>    &lt;auth-constraint&gt;</pre></font>
+<font color="blue"><pre>        &lt;role-name&gt;staff&lt;/role-name&gt;</pre></font>
+<font color="grey"><pre>    &lt;/auth-constraint&gt;</pre></font>
+<font color="grey"><pre>    &lt;!-- TODO: Force clients to use https by configuring the appropriate transport guarantee--&gt;</pre></font>
+<font color="grey"><pre>    &lt;user-data-constraint&gt;</pre></font>
+<font color="blue"><pre>        &lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;</pre></font>
+<font color="grey"><pre>    &lt;/user-data-constraint&gt;</pre></font>
+<font color="grey"><pre>&lt;/security-constraint&gt;</pre></font>
+<font color="grey"><pre>&lt;login-config&gt;</pre></font>
+<font color="grey"><pre>    &lt;!-- TODO: Set the authentication method to HTTP Basic Authentication --&gt;</pre></font>
+<font color="blue"><pre>    &lt;auth-method&gt;BASIC&lt;/auth-method&gt;</pre></font>
+<font color="grey"><pre>    &lt;!-- TODO: Set the authentication realm to be file --&gt; </pre></font>
+<font color="blue"><pre>    &lt;realm-name&gt;file&lt;/realm-name&gt;</pre></font>
+<font color="grey"><pre>&lt;/login-config&gt;</pre></font>
+
+
+<h3>InventoryClient.java</h3>
+
+<pre><font color="grey">
+    private Client createSecureClient(SslConfigurator sslConfig, String username, String password) {
+        Client client = null;
+        
+        // TODO: use the SslConfigurator parameter to create an SSLContext </font><font color="blue">
+        SSLContext sslContext = sslConfig.createSSLContext(); </font><font color="grey">
+        
+        // TODO: Create a Client that uses the SslContext </font><font color="blue">
+        client = ClientBuilder.newBuilder()
+                                     .sslContext(sslContext)
+                                     .build();  </font><font color="grey">
+        
+        // TODO: Create an HttpAuthenticationFeature for HTTP Basic Auth
+        //       with the username and password parameters </font><font color="blue">
+        HttpAuthenticationFeature authentication = 
+                HttpAuthenticationFeature.basic(username, password); </font><font color="grey">
+        
+        // TODO: Register the customer HttpAuthenticationFeature with the client </font><font color="blue">
+        client.register(authentication); </font><font color="grey">
+        
+        // TODO: Return the Client </font><font color="blue">
+        return client; </font><font color="grey">
+    }
+
+    ...
+
+    public void close() {
+        // TODO: close the Client for customers </font><font color="blue">
+        clientCustomer.close(); </font><font color="grey">
+
+        // TODO: close the Client for staff </font><font color="blue">
+        clientStaff.close(); </font><font color="grey">
+    }
+</font></pre>
+
+<h2>BONUS</h2>
+
+<h3>web.xml</h3>
+
+<pre><font color="grey">
+    &lt;security-constraint&gt;
+        &lt;!--  TODO: Add a web resource collection --&gt; </font><font color="blue">
+        &lt;web-resource-collection&gt; </font><font color="grey">
+            &lt;!-- TODO: Set the web resource name to SOAP security constraint --&gt; </font><font color="blue">
+            &lt;web-resource-name&gt;SOAP security constraint&lt;/web-resource-name&gt; </font><font color="grey">
+            &lt;!-- TODO: Set the pattern so that this constraint applies to all URLs --&gt; </font><font color="blue">
+            &lt;url-pattern&gt;/*&lt;/url-pattern&gt; </font><font color="grey">
+            &lt;!-- TODO: Set the method so that this constraint applies only to
+                       POST requests --&gt; </font><font color="blue">
+            &lt;http-method&gt;POST&lt;/http-method&gt;
+        &lt;/web-resource-collection&gt; </font><font color="grey">
+        
+        &lt;!-- TODO: Add an authorization constraint --&gt;  </font><font color="blue">   
+        &lt;auth-constraint&gt; </font><font color="grey">
+            &lt;!-- TODO: Set the constraints so the user must have the role 
+                       customer or staff --&gt; </font><font color="blue">
+            &lt;role-name&gt;customer&lt;/role-name&gt;
+            &lt;role-name&gt;staff&lt;/role-name&gt;
+        &lt;/auth-constraint&gt; </font><font color="grey">
+        
+        &lt;!-- TODO: Add user data constraint --&gt;  </font><font color="blue">   
+        &lt;user-data-constraint&gt; </font><font color="grey">
+            &lt;!-- TODO: Force clients to use https by configuring the appropriate 
+                       transport guarantee --&gt; </font><font color="blue">
+            &lt;transport-guarantee&gt;CONFIDENTIAL&lt;/transport-guarantee&gt;
+        &lt;/user-data-constraint&gt; </font><font color="grey">
+    &lt;/security-constraint&gt;
+    
+    &lt;!-- TODO: Add a login config for HTTP Basic Authentication using the file realm --&gt; </font><font color="blue">
+    &lt;login-config&gt;
+        &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
+        &lt;realm-name&gt;file&lt;/realm-name&gt;
+    &lt;/login-config&gt; 
+</font></pre>
+
+<h3>ForexClient.java</h3>
+
+<pre><font color="grey">
+            // TODO: set the username to "mall" and the password to "teens" </font><font color="blue">
+            BindingProvider bp = (BindingProvider) converterProxy;
+            bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, "mall");
+            bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "teens");
+</font></pre>
+
+</body>
+</html>

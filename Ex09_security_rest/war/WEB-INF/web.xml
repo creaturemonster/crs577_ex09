@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<web-app 
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+                        http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    version="3.0">
+    
+    <servlet>
+        <servlet-name>com.rf.inventory.webapps.InventoryApplication</servlet-name>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>com.rf.inventory.webapps.InventoryApplication</servlet-name>
+        <url-pattern>/rs/*</url-pattern>
+    </servlet-mapping>
+    
+    <!-- TODO: Paste the contents of the file war/WEB-INF/security-elements.txt 
+               below this comment -->
+    <security-role>
+        <role-name>staff</role-name>
+    </security-role>
+    
+    <security-role>
+        <role-name>customer</role-name>
+    </security-role>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Read-only REST requests</web-resource-name>
+            
+            <!-- TODO: Set the pattern so that this constraint applies to URLs that 
+                       end with /rs/item/*  
+                 HINT: see slide 9-10 -->
+           <url-pattern>/rs/item/*</url-pattern>
+         
+            <!-- TODO: Set the method so that this constraint applies only to
+                       GET requests -->
+            <http-method>GET</http-method>
+            
+        </web-resource-collection>
+        <auth-constraint>
+        
+            <!-- TODO: Set the constraint so the user must have the role 
+                       customer or staff -->
+           
+            	<role-name>customer</role-name>
+            	<role-name>staff</role-name>
+            
+            
+        </auth-constraint>
+        
+        <!-- TODO: Ensure clients use https by configuring the appropriate transport guarantee
+             HINT: See slide 9-10 -->
+        <user-data-constraint>
+           	<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+        
+    </security-constraint>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Read-write REST requests</web-resource-name>
+            
+            <!-- TODO: Set the pattern so that this constraint applies to URLs that 
+                       end with /rs/item/* -->
+            <url-pattern>/rs/item/*</url-pattern>
+            
+            <!-- TODO: Set the method so that this constraint applies only to 
+                       POST, PUT, and DELETE requests 
+                 HINT: See slide 9-10 -->
+            <http-method>POST</http-method>
+            <http-method>PUT</http-method>
+            <http-method>DELETE</http-method>
+            
+        </web-resource-collection>
+        
+        <!-- TODO: Set the method so the user must have the role staff -->
+        <auth-constraint>
+            <role-name>staff</role-name>
+        </auth-constraint>
+        
+        <!-- TODO: Force clients to use https by configuring the appropriate transport guarantee
+             HINT: See slide 9-10 -->
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+        
+    </security-constraint>
+    
+    <login-config>
+        <!-- TODO: Set the authentication method to HTTP Basic Authentication 
+             HINT: See slide 9-10 -->
+      	<auth-method>BASIC</auth-method>
+        
+        <!-- TODO: Set the authentication realm to be file --> 
+        <realm-name>file</realm-name>
+    </login-config>
+
+
+</web-app>

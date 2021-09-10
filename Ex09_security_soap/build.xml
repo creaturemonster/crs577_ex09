@@ -1,0 +1,34 @@
+<project name="ex09_security_soap" basedir="." default="deploy">
+    <property name="appname" value="${ant.project.name}" />
+
+    <import file="../build-common.xml" />
+    
+    <property name="wsgen.sei" value="com.gdr.forex.CurrencyConverterImpl" />
+    
+    <property name="wsdl.url" value="https://localhost:8181/${appname}/currencyconverter?wsdl" />
+    
+    <target name="wsgen" 
+            depends="common.wsgen" 
+            description="Runs wsgen from build-common.xml">
+        <!-- See build-common.xml for definitions of common targets -->
+    </target>
+    
+    <target name="build-web-service"
+            depends="wsgen"
+            description="Builds a code-first JAX-WS service">
+    </target>
+    
+    <target name="deploy"
+            depends="common.deploy"
+            description="Deploys the web service">
+        <echo>To test the service, visit ${wsdl.url}</echo>
+    </target>
+    
+    <target name="debug" 
+            depends="common.debug" 
+            description="Dumps values of Ant properties">
+        <echo>$${wsgen.sei} = ${wsgen.sei}</echo>
+        <echo>$${wsdl.url} = ${wsdl.url}</echo>
+    </target>
+    
+</project>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+                         http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+     version="3.0">
+
+    <listener>
+        <listener-class>
+            com.sun.xml.ws.transport.http.servlet.WSServletContextListener
+        </listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>jaxws_endpoint</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>jaxws_endpoint</servlet-name>
+        <url-pattern>/currencyconverter</url-pattern>
+    </servlet-mapping>
+    
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+
+    <security-role>
+        <role-name>staff</role-name>
+    </security-role>
+    
+    <security-role>
+        <role-name>customer</role-name>
+    </security-role>
+    
+    <!-- In the security constraint below, note that the web resource collection
+         is limited to POST requests, so anyone can use a GET request to read
+         the service WSDL with http and no authentication -->
+         
+    <security-constraint>
+        <!--  TODO: Add a web resource collection -->
+        <web-resource-collection>
+        
+            <!-- TODO: Set the web resource name to SOAP security constraint -->
+            <web-resource-name>SOAP security constraint</web-resource-name>
+            
+            <!-- TODO: Set the pattern so that this constraint applies to all URLs -->
+            <url-pattern>/*</url-pattern>
+            
+            <!-- TODO: Set the method so that this constraint applies only to
+                       POST requests -->
+            <http-method>POST</http-method>
+            
+        </web-resource-collection>
+        
+        <!-- TODO: Add an authorization constraint -->    
+        <auth-constraint>
+        
+            <!-- TODO: Set the constraints so the user must have the role 
+                       customer or staff -->
+            <role-name>customer</role-name>
+            <role-name>staff</role-name>
+            
+        </auth-constraint>
+        
+        <!-- TODO: Add user data constraint -->    
+        <user-data-constraint>
+        
+            <!-- TODO: Force clients to use https by configuring the appropriate 
+                       transport guarantee -->
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+            
+        </user-data-constraint>
+    </security-constraint>
+    <!-- TODO: Add a login config for HTTP Basic Authentication using the file realm -->
+   <login-config>
+   	<auth-method>BASIC</auth-method>
+   	<realm-name>file</realm-name>
+   </login-config>
+                       
+
+</web-app>

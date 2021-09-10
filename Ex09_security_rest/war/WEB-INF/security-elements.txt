@@ -1,0 +1,74 @@
+    <security-role>
+        <role-name>staff</role-name>
+    </security-role>
+    
+    <security-role>
+        <role-name>customer</role-name>
+    </security-role>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Read-only REST requests</web-resource-name>
+            
+            <!-- TODO: Set the pattern so that this constraint applies to URLs that 
+                       end with /rs/item/*  
+                 HINT: see slide 9-10 -->
+            ...
+            
+            <!-- TODO: Set the method so that this constraint applies only to
+                       GET requests -->
+            ...
+            
+        </web-resource-collection>
+        <auth-constraint>
+        
+            <!-- TODO: Set the constraint so the user must have the role 
+                       customer or staff -->
+            ...
+            
+        </auth-constraint>
+        
+        <!-- TODO: Ensure clients use https by configuring the appropriate transport guarantee
+             HINT: See slide 9-10 -->
+        <user-data-constraint>
+            ...
+        </user-data-constraint>
+        
+    </security-constraint>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Read-write REST requests</web-resource-name>
+            
+            <!-- TODO: Set the pattern so that this constraint applies to URLs that 
+                       end with /rs/item/* -->
+            ...
+            
+            <!-- TODO: Set the method so that this constraint applies only to 
+                       POST, PUT, and DELETE requests 
+                 HINT: See slide 9-10 -->
+            ...
+            
+        </web-resource-collection>
+        
+        <!-- TODO: Set the method so the user must have the role staff -->
+        <auth-constraint>
+            ...
+        </auth-constraint>
+        
+        <!-- TODO: Force clients to use https by configuring the appropriate transport guarantee
+             HINT: See slide 9-10 -->
+        <user-data-constraint>
+            ...
+        </user-data-constraint>
+        
+    </security-constraint>
+    
+    <login-config>
+        <!-- TODO: Set the authentication method to HTTP Basic Authentication 
+             HINT: See slide 9-10 -->
+        ...
+        
+        <!-- TODO: Set the authentication realm to be file --> 
+        ...
+    </login-config>

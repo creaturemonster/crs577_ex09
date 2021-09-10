@@ -1,0 +1,13 @@
+<html>
+<body>
+<h2>Hints for Exercise 9.1 Securing a SOAP service</h2>
+
+<h3>ForexClient.java</h3>
+
+<font color="grey"><pre>// TODO: set the username to "mall" and the password to "teens"</pre></font>
+<font color="blue"><pre>BindingProvider bp = (BindingProvider) converterProxy;</pre></font>
+<font color="blue"><pre>bp.getRequestContext().put(BindingProvider.USERNAME_PROPERTY, "mall");</pre></font>
+<font color="blue"><pre>bp.getRequestContext().put(BindingProvider.PASSWORD_PROPERTY, "teens");</pre></font>
+
+</body>
+</html>
